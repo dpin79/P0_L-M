@@ -7,7 +7,7 @@ correcto y la sintaxis sea la correcta
 
 def parser(input:str):
     ans = False
-
+    
 
     ###LÓGICA PARA TOKENIZAR CADENA
 
