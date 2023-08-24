@@ -33,9 +33,12 @@ with open("entradaAValidar.txt", "r") as entrada:
     lista = entrada.read().split()
     print(lista)
 
-print("")
-print("-------------------")
-print("")
+#FILTRAR LISTA PARA TENER ELEMENTOS INDIVIDUALES
+
+
+##print("")
+##print("-------------------")
+##print("")
 #ELIMINAR ESPACIOS, TABULADORES Y SALTOS DE LINEA ADICIONALES && HACER LA CADENA MINUSCULA(COMPLETA Y FUNCIONAL)
 lowCaseStr = ""
 for i in lista:
@@ -43,9 +46,54 @@ for i in lista:
     strLowCase = element.lower()
     #print(strLowCase)
     lowCaseStr += f" {strLowCase}"
-print("Cadena completa en minusculas: \n ")
-print(lowCaseStr)       #strDECADENAENMINUSC
+##print("Cadena completa en minusculas: \n ")
+##print(lowCaseStr)       #strDECADENAENMINUSC
 
+lowerLst = lowCaseStr.split()
+print("Lista completa en minusculas: \n ")
+print(lowerLst)       #lstDECADENAENMINUSC
+
+###LISTAS DE PALABRAS CLAVE PARA FACILMENTE FILTRAR
+#NOTE: Hacer el proceso de tokenizar las asignaciones de variable con un control de variables y valores en un dict
+DEF = ['defvar','defproc']
+
+SIN_COMM = ['walk(#)','leap(#)','turn(DIR)', 'turnto(ORI)','drop(#)','get(#)', 'grab(#)', 'letgo(#)']       #SINGLE/SIMPLE COMMANDS - GREEN
+
+TUP_COMM = ['jump(#,#)','walk(#, DIR)','walk(#, ORI)','leap(#,DIR)','leap(#,ORI)']       #TUPLE COMMANDS - BLUE
+####jump caso puntual, puede NO tener números pero llamar el número de la variable contenida
+#se puede solucionar guardando los valores en un dict y haciendo el cambio antes y luego validando si son numeros
+SPE_COMM = []       #SPECIAL COMMANDS - YELLOW
+
+ALL_COMM = SIN_COMM + TUP_COMM + SPE_COMM       #CUANDO SEA NECESARIO SOLO VERIFICAR SI ES UN COMANDO
+#north  south   east    west
+CONDS = ['facing(ORI)','can(ALL_COMM)']
+
+DIR = ['front','right','left','back']
+
+ORI = ['north','south','east','west']
+
+NOT_STRUC = ['not: COND']      #CONDITIONS - JUST 3 GENERAL CASES
+tokenLst = []
+for i in (range(len(lowerLst) -1) ):
+    print(lowerLst[i])
+    ###TOKENIZAR defVar y defProc con sus elementos
+    try:
+        if int(lowerLst[i]) % 1 == 0:
+            tokenLst.append('#')        #IDENTIFICAR NUMEROS Y CAMBIARLOS POR '#'
+    except:
+       continue
+    if lowerLst[i] in DEF:
+        try:
+            if int(lowerLst[i+2]) % 1 == 0:
+                tokenLst.append('DEFV')
+        except:
+        
+            tokenLst.append('DEFP')
+    
+print("")
+print(f"La lista cambiando palabras clave es: \n{tokenLst}")
+    
+      
 #HACER FUNCION PARA VERIFICAR PARENTESIS(COMPLETA Y FUNCIONAL)
 ansParen = True
 paren = ['(',')','[',']','{','}']
@@ -53,9 +101,9 @@ check = []
 for i in lowCaseStr:
     if i in paren:
         check.append(i)     #LISTA DE 
-print("")
-print(check, len(check))
-print("")
+##print("")
+##print(check, len(check))
+##print("")
 
 par_dict = {'(':')','{':'}','[':']'}
 stack = []
@@ -74,7 +122,7 @@ for char in check:
           ansParen = False
 ansParen =  stack == []
 
-print(f"El resultado del validParen es: {ansParen}")
+##print(f"El resultado del validParen es: {ansParen}")
 
 ###
 """
