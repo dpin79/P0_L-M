@@ -1,0 +1,54 @@
+
+
+
+# IN: 3 + 5 = 9 +3+3+4+54+2+ ((15+2)+-3) 
+cadena[:]
+
+# IN: 3 + 5 + = 9
+
+# IN: 3 + a = 9
+
+for char in cadena:
+    if char == '=':
+
+String preEqueal
+String postEqueal
+preNum = []
+preSim = []
+for char in preEqual:
+    try:
+        int(char) % 1
+        preNum.append(char)
+    except:
+        continue
+    try:
+        if char == '+':
+            preSim.append(char)
+
+
+#leap(v, D) -- fr,left,right,back
+
+#turn(D) -- left, right, around
+
+D = [front,left, right, back, around]
+
+#turnTest = turn(front)
+
+for char in turntest:
+    turnTest[4:10] == 'left' or
+    
+    if 
+else:
+        
+    valid:bool
+
+    valid = False
+#turnTest = turn(X)
+
+
+ 
+
+
+
+
+

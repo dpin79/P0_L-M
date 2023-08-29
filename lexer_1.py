@@ -59,6 +59,16 @@ DEF = ['defvar','defproc']
 
 SIN_COMM = ['walk(#)','leap(#)','turn(DIR)', 'turnto(ORI)','drop(#)','get(#)', 'grab(#)', 'letgo(#)']       #SINGLE/SIMPLE COMMANDS - GREEN
 
+#JumP(a,3)
+#jump(a,3)
+#jump(a,#)}
+
+#defvar a 2
+#dict = {'a':'#'}
+#jump(a,#)
+
+#jump(#,#)
+
 TUP_COMM = ['jump(#,#)','walk(#, DIR)','walk(#, ORI)','leap(#,DIR)','leap(#,ORI)']       #TUPLE COMMANDS - BLUE
 ####jump caso puntual, puede NO tener números pero llamar el número de la variable contenida
 #se puede solucionar guardando los valores en un dict y haciendo el cambio antes y luego validando si son numeros
