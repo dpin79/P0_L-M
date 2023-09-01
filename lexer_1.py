@@ -31,7 +31,7 @@ def lexer():
 #SIMULACIÓN DE INGRESO DE CADENA 
 with open("entradaAValidar.txt", "r") as entrada:
     lista = entrada.read().split()
-    print(lista)
+    ###print(lista)
 
 #FILTRAR LISTA PARA TENER ELEMENTOS INDIVIDUALES
 
@@ -59,16 +59,6 @@ DEF = ['defvar','defproc']
 
 SIN_COMM = ['walk(#)','leap(#)','turn(DIR)', 'turnto(ORI)','drop(#)','get(#)', 'grab(#)', 'letgo(#)']       #SINGLE/SIMPLE COMMANDS - GREEN
 
-#JumP(a,3)
-#jump(a,3)
-#jump(a,#)}
-
-#defvar a 2
-#dict = {'a':'#'}
-#jump(a,#)
-
-#jump(#,#)
-
 TUP_COMM = ['jump(#,#)','walk(#, DIR)','walk(#, ORI)','leap(#,DIR)','leap(#,ORI)']       #TUPLE COMMANDS - BLUE
 ####jump caso puntual, puede NO tener números pero llamar el número de la variable contenida
 #se puede solucionar guardando los valores en un dict y haciendo el cambio antes y luego validando si son numeros
@@ -84,14 +74,26 @@ ORI = ['north','south','east','west']
 
 NOT_STRUC = ['not: COND']      #CONDITIONS - JUST 3 GENERAL CASES
 tokenLst = []
+
+#RECORRIDO PARA EMPEZAR A TOKENIZAR
 for i in (range(len(lowerLst) -1) ):
-    print(lowerLst[i])
+    ###print(lowerLst[i])
     ###TOKENIZAR defVar y defProc con sus elementos
     try:
         if int(lowerLst[i]) % 1 == 0:
-            tokenLst.append('#')        #IDENTIFICAR NUMEROS Y CAMBIARLOS POR '#'
+            tokenLst.append('#')       #IDENTIFICAR NUMEROS Y CAMBIARLOS POR '#' DE CADENAS CORRECTAS EJ: "4"
+        else:
+           for char in lowerLst[i]:
+              if int(char) % 1 == 0:
+                 tokenLst.append('#')  #########################CAMBIAR NÚMEROS INCLUSO EN CADENAS ERRONEAS
+    #TODO HACER ELSE DE IF QUE ANALIZA CADENAS ERRONEAS EJ: "(3"
     except:
-       continue
+       for char in lowerLst[i]:
+          try:
+            if int(lowerLst[i]) % 1 == 0:
+               tokenLst.append('#')  
+          except:
+             continue
     if lowerLst[i] in DEF:
         try:
             if int(lowerLst[i+2]) % 1 == 0:
@@ -100,8 +102,8 @@ for i in (range(len(lowerLst) -1) ):
         
             tokenLst.append('DEFP')
     
-print("")
-print(f"La lista cambiando palabras clave es: \n{tokenLst}")
+###print("")
+###print(f"La lista cambiando palabras clave es: \n{tokenLst}")
     
       
 #HACER FUNCION PARA VERIFICAR PARENTESIS(COMPLETA Y FUNCIONAL)
