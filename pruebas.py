@@ -25,4 +25,3 @@ def crearListaPalabras(archivo: str):
 
 print(crearListaPalabras("entradaAValidar"))
 
-#TODO Dividir elementos como 'walk(1' y 'can(walk(1'

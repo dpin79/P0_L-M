@@ -64,7 +64,7 @@ TUP_COMM = ['jump(#,#)','walk(#, DIR)','walk(#, ORI)','leap(#,DIR)','leap(#,ORI)
 #se puede solucionar guardando los valores en un dict y haciendo el cambio antes y luego validando si son numeros
 SPE_COMM = []       #SPECIAL COMMANDS - YELLOW
 
-ALL_COMM = SIN_COMM + TUP_COMM + SPE_COMM       #CUANDO SEA NECESARIO SOLO VERIFICAR SI ES UN COMANDO
+ALL_COMM = SIN_COMM + TUP_COMM + SPE_COMM       #CUANDO SEA NECESARIO SOLO VERIFICAR SI ES UN COMANDO (VERIFICAR)
 #north  south   east    west
 CONDS = ['facing(ORI)','can(ALL_COMM)']
 
@@ -76,8 +76,91 @@ NOT_STRUC = ['not: COND']      #CONDITIONS - JUST 3 GENERAL CASES
 tokenLst = []
 
 #RECORRIDO PARA EMPEZAR A TOKENIZAR
+print("")
+print("Cada uno de los elementos: \n")
 for i in (range(len(lowerLst) -1) ):
-    ###print(lowerLst[i])
+    
+    
+    print(lowerLst[i])
+    editLst = []
+    ###TODO CODIGO PARA ORGANIZAR Y REMOVER CADENAS ERRONEAS EJ: "(3"
+    while len(lowerLst[i]) == 1:
+       
+      try:
+          #CASOS DE PAREJAS DE PARENTESIS O CORCHETES EN UN MISMO ELEMENTO
+
+          if lowerLst[i] == '()':
+             editLst.append('(')
+             editLst.append(')')
+          elif lowerLst[i] == '{}':
+             editLst.append('{')
+             editLst.append('}')
+          #CASOS DE PARENTESIS EN PRIMERA O ULTIMA POSICIÓN
+
+          elif lowerLst[i][0] == '(':    #CASO ERROR EN CADENA POR PRIMER PARENTESIS APERTURA
+            editLst.append('(')
+            restElem = lowerLst[i][1:]
+            editLst.append(restElem)
+          elif lowerLst[i][0] == ')':    #CASO ERROR EN CADENA POR PRIMER PARENTESIS CLAUSURA
+              editLst.append(')')
+              restElem = lowerLst[i][1:]
+              editLst.append(restElem)
+          elif lowerLst[i][-1] == '(':    #CASO ERROR EN CADENA POR ULTIMO PARENTESIS APERTURA
+              editLst.append('(')
+              restElem = lowerLst[i][:-1]
+              editLst.append(restElem)
+          elif lowerLst[i][-1] == ')':    #CASO ERROR EN CADENA POR ULTIMO PARENTESIS CLAUSURA
+              editLst.append(')')
+              restElem = lowerLst[i][:-1]
+              editLst.append(restElem)
+          #CASOS DE CORCHETES EN PRIMERA O ULTIMA POSICIÓN
+
+          elif lowerLst[i][0] == '{':    #CASO ERROR EN CADENA POR PRIMER CORCHETES APERTURA
+            editLst.append('{')
+            restElem = lowerLst[i][1:]
+            editLst.append(restElem)
+          elif lowerLst[i][0] == '}':    #CASO ERROR EN CADENA POR PRIMER CORCHETES CLAUSURA
+              editLst.append('}')
+              restElem = lowerLst[i][1:]
+              editLst.append(restElem)
+          elif lowerLst[i][-1] == '{':    #CASO ERROR EN CADENA POR ULTIMO CORCHETES APERTURA
+              editLst.append('{')
+              restElem = lowerLst[i][:-1]
+              editLst.append(restElem)
+          elif lowerLst[i][-1] == '}':    #CASO ERROR EN CADENA POR ULTIMO CORCHETES CLAUSURA
+              editLst.append('}')
+              restElem = lowerLst[i][:-1]
+              editLst.append(restElem)
+          #CASOS DE COMAS EN PRIMERA O ULTIMA POSICIÓN
+
+          elif lowerLst[i][0] == ',':    #CASO ERROR EN CADENA POR PRIMER CORCHETES CLAUSURA
+              editLst.append(',')
+              restElem = lowerLst[i][1:]
+              editLst.append(restElem)
+          elif lowerLst[i][-1] == ',':    #CASO ERROR EN CADENA POR ULTIMO CORCHETES APERTURA
+              editLst.append(',')
+              restElem = lowerLst[i][:-1]
+              editLst.append(restElem)
+
+          ##TODO CASOS DE PUNTO Y COMA EN PRIMERA O ULTIMA POSICIÓN
+
+          elif lowerLst[i][0] == ',':    #CASO ERROR EN CADENA POR PRIMER CORCHETES CLAUSURA
+              editLst.append(',')
+              restElem = lowerLst[i][1:]
+              editLst.append(restElem)
+          elif lowerLst[i][-1] == ',':    #CASO ERROR EN CADENA POR ULTIMO CORCHETES APERTURA
+              editLst.append(',')
+              restElem = lowerLst[i][:-1]
+              editLst.append(restElem)
+        
+
+      except:
+        editLst.append(lowerLst[i])
+    
+    #####TODO HACER DICT CON DEFINICION DE VARIABLES DECLARADAS
+
+    #INSERTAR DICT
+
     ###TOKENIZAR defVar y defProc con sus elementos
     try:
         if int(lowerLst[i]) % 1 == 0:
