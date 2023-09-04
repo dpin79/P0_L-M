@@ -1,0 +1,74 @@
+###LEET-CODE BREAKS
+class Solution:
+    def nextGreatestLetter(self, letters, target) -> str:
+        ans = 0
+        for i in letters:
+            if i > target > ans:
+                ans = i
+            else:
+                continue
+        if ans == None:
+            ans = letters[0]
+        return ans
+    
+def nextGreatestLetter(letters, target: str) -> str:
+        ans = chr(0)
+        for i in letters:
+            if i > target > ans:
+                ans = i
+            else:
+                continue
+        if ans == None:
+            ans = letters[0]
+        return ans
+
+print(nextGreatestLetter(["c","f","j"],"a"))
+
+def tribonacci(n: int) -> int:
+    v1 = 0
+    v2 = 1
+    v3 = 1
+    i = 2
+    if n == 0:
+        nV = v1
+    elif n == 1:
+        nV = v2
+    elif n == 2:
+        nV = v3
+    else:    
+        while i != n:
+            nV = v1 + v2 +v3
+            v1 = v2
+            v2 = v3
+            v3 = nV
+            i+=1
+    return nV
+
+def tribonacci2(n: int) -> int:
+        lst = [0,1,1]
+        i = 2
+        if n <= 0:
+            nV = lst[n]
+        else:    
+            for i in range(3, n+1):
+                lst.append(sum(lst))
+                lst.pop(0)
+                nV = lst[-1]
+        return nV
+
+print(tribonacci2(4))
+
+def uniquePaths(m: int, n: int) -> int:
+        #AJUSTE DE NUMEROS A MOVIMIENTOS POSIBLES
+        A = m -1
+        B = n -1
+        #USANDO FORMULA DE COMBINATORIA SIMPLIFICADA
+        #(factorial del # numero de posiblidades // factorial del # que quiero de cada caso, para parejas es 2)
+        x = m + n
+        y = x -1
+
+        if A >= B:
+             ans = ((x*y)//B)
+        else:
+             ans = ((x*y)//A)
+        return ans

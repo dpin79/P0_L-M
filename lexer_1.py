@@ -1,5 +1,5 @@
 """
-
+OBJETIVO DEL ARCHIVO EN EL PROGRAMA
 La idea principal del LEXER es convertir las palabras que se espera
 recibir a tokens conocidos y estandarizar lo que es recibido por 
 parametros para posteriormente ser analizado sintacticamente por el PARSER.
@@ -7,9 +7,6 @@ parametros para posteriormente ser analizado sintacticamente por el PARSER.
 """
 """
 
-###ACLARACIONES LITERALES DEL DOCUMENTO...
-
-"""
 def lexer():
     interrupt = False
     while interrupt == False:
@@ -25,66 +22,44 @@ def lexer():
 
         return strFiltered
         #return strConverted
+"""
 
-
-###PRUEBAS
-#SIMULACIÓN DE INGRESO DE CADENA 
+###LECTURA DE ARCHIVO
+#INGRESO DE CADENA POR NOMBRE DE ARCHIVO
 with open("entradaAValidar.txt", "r") as entrada:
     lista = entrada.read().split()
     ###print(lista)
 
-#FILTRAR LISTA PARA TENER ELEMENTOS INDIVIDUALES
 
-
-##print("")
-##print("-------------------")
-##print("")
+###FILTRAR LISTA PARA TENER ELEMENTOS INDIVIDUALES
 #ELIMINAR ESPACIOS, TABULADORES Y SALTOS DE LINEA ADICIONALES && HACER LA CADENA MINUSCULA(COMPLETA Y FUNCIONAL)
 lowCaseStr = ""
 for i in lista:
     element = str(i)
     strLowCase = element.lower()
-    #print(strLowCase)
     lowCaseStr += f" {strLowCase}"
-##print("Cadena completa en minusculas: \n ")
-##print(lowCaseStr)       #strDECADENAENMINUSC
+
+###print("Cadena completa en minusculas: \n ")
+###print(lowCaseStr)       #strDECADENAENMINUSC
 
 lowerLst = lowCaseStr.split()
 print("Lista completa en minusculas: \n ")
 print(lowerLst)       #lstDECADENAENMINUSC
 
-###LISTAS DE PALABRAS CLAVE PARA FACILMENTE FILTRAR
-#NOTE: Hacer el proceso de tokenizar las asignaciones de variable con un control de variables y valores en un dict
-DEF = ['defvar','defproc']
 
-SIN_COMM = ['walk(#)','leap(#)','turn(DIR)', 'turnto(ORI)','drop(#)','get(#)', 'grab(#)', 'letgo(#)']       #SINGLE/SIMPLE COMMANDS - GREEN
-
-TUP_COMM = ['jump(#,#)','walk(#, DIR)','walk(#, ORI)','leap(#,DIR)','leap(#,ORI)']       #TUPLE COMMANDS - BLUE
-####jump caso puntual, puede NO tener números pero llamar el número de la variable contenida
-#se puede solucionar guardando los valores en un dict y haciendo el cambio antes y luego validando si son numeros
-SPE_COMM = []       #SPECIAL COMMANDS - YELLOW
-
-ALL_COMM = SIN_COMM + TUP_COMM + SPE_COMM       #CUANDO SEA NECESARIO SOLO VERIFICAR SI ES UN COMANDO (VERIFICAR)
-#north  south   east    west
-CONDS = ['facing(ORI)','can(ALL_COMM)']
-
-DIR = ['front','right','left','back']
-
-ORI = ['north','south','east','west']
-
-NOT_STRUC = ['not: COND']      #CONDITIONS - JUST 3 GENERAL CASES
-tokenLst = []
-
-#RECORRIDO PARA EMPEZAR A TOKENIZAR
+###RECORRIDO PARA EMPEZAR A TOKENIZAR
 print("")
 print("Cada uno de los elementos: \n")
-for i in (range(len(lowerLst) -1) ):
+do = 0
+for i in (range(len(lowerLst)-1) ):
     
     
     print(lowerLst[i])
     editLst = []
     ###TODO CODIGO PARA ORGANIZAR Y REMOVER CADENAS ERRONEAS EJ: "(3"
-    while len(lowerLst[i]) == 1:
+    
+    while do < 21:
+    #while len(lowerLst[i]) != 1:
        
       try:
           #CASOS DE PAREJAS DE PARENTESIS O CORCHETES EN UN MISMO ELEMENTO
@@ -142,48 +117,120 @@ for i in (range(len(lowerLst) -1) ):
               restElem = lowerLst[i][:-1]
               editLst.append(restElem)
 
-          ##TODO CASOS DE PUNTO Y COMA EN PRIMERA O ULTIMA POSICIÓN
+          #CASOS DE PUNTO Y COMA EN PRIMERA O ULTIMA POSICIÓN
 
-          elif lowerLst[i][0] == ',':    #CASO ERROR EN CADENA POR PRIMER CORCHETES CLAUSURA
-              editLst.append(',')
+          elif lowerLst[i][0] == ';':    #CASO ERROR EN CADENA POR PRIMER PUNTO Y COMA
+              editLst.append(';')
               restElem = lowerLst[i][1:]
               editLst.append(restElem)
-          elif lowerLst[i][-1] == ',':    #CASO ERROR EN CADENA POR ULTIMO CORCHETES APERTURA
-              editLst.append(',')
+          elif lowerLst[i][-1] == ';':    #CASO ERROR EN CADENA POR ULTIMO PUNTO Y COMA
+              editLst.append(';')
               restElem = lowerLst[i][:-1]
               editLst.append(restElem)
-        
+          ###TODO CASOS DE NUMERO EN PRIMERA O ÚLTIMA POSICIÓN (NUMERO DE UNA CIFRA)
+
+          elif int(lowerLst[i][0]) % 1 == 0:    #PRIMER CHAR NUMERO EN CADENA ERRONEA
+              editLst.append(lowerLst[i][0])
+              restElem = lowerLst[i][1:]
+              editLst.append(restElem)
+
+          elif int(lowerLst[i][-1]) % 1 == 0:    #ULTIMO CHAR NUMERO EN CADENA ERRONEA
+              editLst.append(lowerLst[i][-1])
+              restElem = lowerLst[i][:-1]
+              editLst.append(restElem)     
+          
+          do += 1   
 
       except:
-        editLst.append(lowerLst[i])
-    
-    #####TODO HACER DICT CON DEFINICION DE VARIABLES DECLARADAS
+        ###CASOS DE PARENTESIS EN MEDIO DE UN ELEMENTO (PARENTESIS ABIERTO)
+        if (len(lowerLst[i]) >= 3) and ('(' in lowerLst[i]):
+           chain = str(strLowCase[i])
+           index = chain.find('(')
+           editLst.append(chain[:index])
+           editLst.append('(')
+           editLst.append(chain[index +1:])
 
-    #INSERTAR DICT
+        ###CASOS DE PARENTESIS EN MEDIO DE UN ELEMENTO (PARENTESIS CERRADO)
+        elif (len(lowerLst[i]) >= 3) and (')' in lowerLst[i]):
+           chain = str(strLowCase[i])
+           index = chain.find(')')
+           editLst.append(chain[:index])
+           editLst.append(')')
+           editLst.append(chain[index +1:])
 
-    ###TOKENIZAR defVar y defProc con sus elementos
-    try:
-        if int(lowerLst[i]) % 1 == 0:
-            tokenLst.append('#')       #IDENTIFICAR NUMEROS Y CAMBIARLOS POR '#' DE CADENAS CORRECTAS EJ: "4"
+        ###CASOS DE CORCHETE EN MEDIO DE UN ELEMENTO (CORCHETE ABIERTO)
+        elif (len(lowerLst[i]) >= 3) and ('{' in lowerLst[i]):
+           chain = str(strLowCase[i])
+           index = chain.find('{')
+           editLst.append(chain[:index])
+           editLst.append('{')
+           editLst.append(chain[index +1:])
+
+        ###CASOS DE CORCHETE EN MEDIO DE UN ELEMENTO (CORCHETE CERRADO)
+        elif (len(lowerLst[i]) >= 3) and ('}' in lowerLst[i]):
+           chain = str(strLowCase[i])
+           index = chain.find('}')
+           editLst.append(chain[:index])
+           editLst.append('}')
+           editLst.append(chain[index +1:])
+           
         else:
-           for char in lowerLst[i]:
-              if int(char) % 1 == 0:
-                 tokenLst.append('#')  #########################CAMBIAR NÚMEROS INCLUSO EN CADENAS ERRONEAS
-    #TODO HACER ELSE DE IF QUE ANALIZA CADENAS ERRONEAS EJ: "(3"
+          ###EN CASO DE NO CUMPLIR CON ALGUNA DE LAS ANTERIORES OPCIONES SIMPLEMENTE NO MODIFICAR NADA
+           editLst.append(lowerLst[i])
+
+print('LA LISTA EDITADA PARA QUE NO HAYA IRREGULARIDADES ES: \n')
+print(editLst)
+    
+###LISTAS DE PALABRAS CLAVE PARA FACILMENTE FILTRAR
+#NOTE: Hacer el proceso de tokenizar las asignaciones de variable con un control de variables y valores en un dict
+DEF = ['defvar','defproc']
+
+SIN_COMM = ['walk(#)','leap(#)','turn(DIR)', 'turnto(ORI)','drop(#)','get(#)', 'grab(#)', 'letgo(#)']       #SINGLE/SIMPLE COMMANDS - GREEN
+
+TUP_COMM = ['jump(#,#)','walk(#, DIR)','walk(#, ORI)','leap(#,DIR)','leap(#,ORI)']       #TUPLE COMMANDS - BLUE
+####jump caso puntual, puede NO tener números pero llamar el número de la variable contenida
+#se puede solucionar guardando los valores en un dict y haciendo el cambio antes y luego validando si son numeros
+SPE_COMM = []       #SPECIAL COMMANDS - YELLOW
+
+ALL_COMM = SIN_COMM + TUP_COMM + SPE_COMM       #CUANDO SEA NECESARIO SOLO VERIFICAR SI ES UN COMANDO (VERIFICAR)
+#north  south   east    west
+CONDS = ['facing(ORI)','can(ALL_COMM)']
+
+DIR = ['front','right','left','back']
+
+ORI = ['north','south','east','west']
+
+NOT_STRUC = ['not: COND']      #CONDITIONS - JUST 3 GENERAL CASES
+tokenLst = []
+
+
+###TODO HACER DICT CON DEFINICION DE VARIABLES DECLARADAS
+
+#INSERTAR DICT
+
+###TOKENIZAR defVar y defProc con sus elementos
+try:
+    if int(lowerLst[i]) % 1 == 0:
+        tokenLst.append('#')       #IDENTIFICAR NUMEROS Y CAMBIARLOS POR '#' DE CADENAS CORRECTAS EJ: "4"
+    else:
+      for char in lowerLst[i]:
+          if int(char) % 1 == 0:
+            tokenLst.append('#')  #########################CAMBIAR NÚMEROS INCLUSO EN CADENAS ERRONEAS
+#TODO HACER ELSE DE IF QUE ANALIZA CADENAS ERRONEAS EJ: "(3"
+except:
+  for char in lowerLst[i]:
+      try:
+        if int(lowerLst[i]) % 1 == 0:
+          tokenLst.append('#')  
+      except:
+        continue
+if lowerLst[i] in DEF:
+    try:
+        if int(lowerLst[i+2]) % 1 == 0:
+            tokenLst.append('DEFV')
     except:
-       for char in lowerLst[i]:
-          try:
-            if int(lowerLst[i]) % 1 == 0:
-               tokenLst.append('#')  
-          except:
-             continue
-    if lowerLst[i] in DEF:
-        try:
-            if int(lowerLst[i+2]) % 1 == 0:
-                tokenLst.append('DEFV')
-        except:
-        
-            tokenLst.append('DEFP')
+    
+        tokenLst.append('DEFP')
     
 ###print("")
 ###print(f"La lista cambiando palabras clave es: \n{tokenLst}")
