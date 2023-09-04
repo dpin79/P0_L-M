@@ -43,18 +43,21 @@ for i in lista:
 ###print(lowCaseStr)       #strDECADENAENMINUSC
 
 lowerLst = lowCaseStr.split()
-print("Lista completa en minusculas: \n ")
-print(lowerLst)       #lstDECADENAENMINUSC
+#####print("Lista completa en minusculas: \n ")
+#####print(lowerLst)       #lstDECADENAENMINUSC
 
 
 ###RECORRIDO PARA EMPEZAR A TOKENIZAR
-print("")
-print("Cada uno de los elementos: \n")
+#####print("")
+#####print("Cada uno de los elementos: \n")
 do = 0
+
+#TODO CAMBIAR FILTRO
+''' 
 for i in (range(len(lowerLst)-1) ):
     
     
-    print(lowerLst[i])
+    #####print(lowerLst[i])
     editLst = []
     ###TODO CODIGO PARA ORGANIZAR Y REMOVER CADENAS ERRONEAS EJ: "(3"
     
@@ -178,8 +181,15 @@ for i in (range(len(lowerLst)-1) ):
           ###EN CASO DE NO CUMPLIR CON ALGUNA DE LAS ANTERIORES OPCIONES SIMPLEMENTE NO MODIFICAR NADA
            editLst.append(lowerLst[i])
 
-print('LA LISTA EDITADA PARA QUE NO HAYA IRREGULARIDADES ES: \n')
-print(editLst)
+#####print('LA LISTA EDITADA PARA QUE NO HAYA IRREGULARIDADES ES: \n')
+#####print(editLst)
+'''
+
+############################################################################################################################
+############------------------------------------LST FILTRADA ARTIFICIALMENTE------------------------------------############
+############################################################################################################################
+
+flst = ['defvar', 'nom', '0', 'defvar', 'x', '0', 'defvar', 'y', '0', 'defvar', 'one', '0', 'defproc', 'putcb', '(', 'c', ',', 'b', ')', '{', 'drop', '(', 'c', ')', ';', 'letgo', '(', 'b', ')', ';', 'walk', '(', 'n', ')', '}', 'defproc', 'gonorth', '(', ')', '{', 'while', 'can', '(', 'walk', '(', '1', ',', 'north', ')', ')', '{', 'walk', '(', '1', ',', 'north', ')', '}', '}', 'defproc', 'gowest', '(', ')', '{', 'if', 'can','(', 'walk', '(', '1', ',', 'west', ')', ')', '{', 'walk', '(', '1', ',', 'west', ')', '}', 'else', 'nop', '(', ')', '}', '{', 'jump', '(', '3', ',', '3', ')', ';', 'putcb', '(', '2', ',', '1', ')', '}']
     
 ###LISTAS DE PALABRAS CLAVE PARA FACILMENTE FILTRAR
 #NOTE: Hacer el proceso de tokenizar las asignaciones de variable con un control de variables y valores en un dict
@@ -210,32 +220,54 @@ tokenLst = []
 
 ###TOKENIZAR defVar y defProc con sus elementos
 try:
-    if int(lowerLst[i]) % 1 == 0:
+    if int(flst[i]) % 1 == 0:
         tokenLst.append('#')       #IDENTIFICAR NUMEROS Y CAMBIARLOS POR '#' DE CADENAS CORRECTAS EJ: "4"
     else:
-      for char in lowerLst[i]:
+      for char in flst[i]:
           if int(char) % 1 == 0:
             tokenLst.append('#')  #########################CAMBIAR NÚMEROS INCLUSO EN CADENAS ERRONEAS
 #TODO HACER ELSE DE IF QUE ANALIZA CADENAS ERRONEAS EJ: "(3"
 except:
-  for char in lowerLst[i]:
+  for char in flst[i]:
       try:
-        if int(lowerLst[i]) % 1 == 0:
+        if int(flst[i]) % 1 == 0:
           tokenLst.append('#')  
       except:
         continue
-if lowerLst[i] in DEF:
+if flst[i] in DEF:
     try:
-        if int(lowerLst[i+2]) % 1 == 0:
+        if int(flst[i+2]) % 1 == 0:
             tokenLst.append('DEFV')
     except:
     
         tokenLst.append('DEFP')
     
-###print("")
-###print(f"La lista cambiando palabras clave es: \n{tokenLst}")
-    
-      
+print("")
+print(f"La lista cambiando palabras clave es: \n{tokenLst}")
+
+
+
+
+
+
+
+
+
+############################################################################################################################
+############################################################################################################################
+############-----------------------------------------------PARSER-----------------------------------------------############
+############################################################################################################################
+############################################################################################################################
+
+
+
+
+
+
+
+
+
+
 #HACER FUNCION PARA VERIFICAR PARENTESIS(COMPLETA Y FUNCIONAL)
 ansParen = True
 paren = ['(',')','[',']','{','}']
