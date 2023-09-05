@@ -1,6 +1,7 @@
+#ORIGINAL
 flst = ['defvar', 'nom', '0', 'defvar', 'x', '0', 'defvar', 'y', '0', 'defvar', 'one', '0', 'defproc', 'putcb', '(', 'c', ',', 'b', ')', '{', 'drop', '(', 'c', ')', ';', 'letgo', '(', 'b', ')', ';', 'walk', '(', 'n', ')', '}', 'defproc', 'gonorth', '(', ')', '{', 'while', 'can', '(', 'walk', '(', '1', ',', 'north', ')', ')', '{', 'walk', '(', '1', ',', 'north', ')', '}', '}', 'defproc', 'gowest', '(', ')', '{', 'if', 'can','(', 'walk', '(', '1', ',', 'west', ')', ')', '{', 'walk', '(', '1', ',', 'west', ')', '}', 'else', 'nop', '(', ')', '}', '{', 'jump', '(', '3', ',', '3', ')', ';', 'putcb', '(', '2', ',', '1', ')', '}']
-
-TesterDeflst = ['defvar', 'nom', '0', 'defvar', 'x', '0', 'defvar', 'y', '0', 'defvar', 'one', '0', 'defproc', 'putcb', '(', 'nom', ',', 'one', ')', '{', 'drop', '(', 'c', ')', ';', 'letgo', '(', 'b', ')', ';', 'walk', '(', 'n', ')', '}', 'defproc', 'gonorth', '(', ')', '{', 'while', 'can', '(', 'walk', '(', '1', ',', 'north', ')', ')', '{', 'walk', '(', '1', ',', 'north', ')', '}', '}', 'defproc', 'gowest', '(', ')', '{', 'if', 'can','(', 'walk', '(', '1', ',', 'west', ')', ')', '{', 'walk', '(', '1', ',', 'west', ')', '}', 'else', 'nop', '(', ')', '}', '{', 'jump', '(', '3', ',', '3', ')', ';', 'putcb', '(', '2', ',', '1', ')', '}']
+#TESTER
+flstTester = ['defvar', 'nom', '0', 'defvar', 'x', '0', 'defvar', 'y', '0', 'defvar', 'one', '0', 'defproc', 'putcb', '(', 'nom', ',', 'one', ')', '{', 'drop', '(', 'c', ')', ';', 'letgo', '(', 'b', ')', ';', 'walk', '(', 'n', ')', '}', 'defproc', 'gonorth', '(', ')', '{', 'while', 'can', '(', 'walk', '(', '1', ',', 'north', ')', ')', '{', 'walk', '(', '1', ',', 'north', ')', '}', '}', 'defproc', 'gowest', '(', ')', '{', 'if', 'can','(', 'walk', '(', '1', ',', 'west', ')', ')', '{', 'walk', '(', '1', ',', 'west', ')', '}', 'else', 'nop', '(', ')', '}', '{', 'jump', '(', '3', ',', '3', ')', ';', 'putcb', '(', '2', ',', '1', ')', '}']
 #---------------------------------------------------------------------------------------------------------------------------********-----*****-----...
 
 DEF = ['defvar','defproc']
@@ -28,7 +29,7 @@ tokenLst = []
 
 #INSERTAR DICT
 
-###TOKENIZAR defVar y defProc con sus elementos
+###TOKENIZAR defVar y defProc con sus elementos - DONE
 i = 0
 while i < ((len(flst))):
         
@@ -52,7 +53,7 @@ while i < ((len(flst))):
 #print(f"La lista original: \n{flst}\n")        
 print("")
 print(f"La lista cambiando palabras clave es: \n{tokenLst}")
-###CREACION DE DICCIONARIO DE VARIABLES DEFINIDAS
+###CREACION DE DICCIONARIO DE VARIABLES DEFINIDAS - DOME
 
 varDict = {}
 
@@ -62,9 +63,6 @@ while j < len(tokenLst):
             
         if tokenLst[j] == 'DEFV':
             varDict[tokenLst[j+1]] = tokenLst[j+2]
-            #tokenLst.pop(j)
-            #tokenLst.pop(j+1)
-            #tokenLst.pop(j+2)
 
     except:
         continue
@@ -76,8 +74,44 @@ print(f"Nueva lista tokenizada: \n{tokenLst}\n")
 print("")
 print(f"Diccionario con variables definidas es: \n{varDict}")
 
-###HACER EL REEMPLAZO DE VARIABLES CON LA LISTA "TesterDeflst"
+###TODO ELIMINAR DEFV CON SUS ELEMENTOS (3 ELEMENTOS TOTALES)
 
-#INSERT CODE
-    
+print("")
+print(f"ANTES Lista tokenizada filtrada de DEFV: \n{tokenLst}\n")        
+print("")
 
+for i in tokenLst:
+     
+     if i == 'DEFV':
+          
+          indexP = tokenLst.index(i)
+          
+          print(f"ANTES DE POP token  List: {tokenLst}")
+          tokenLst.pop(indexP)
+          tokenLst.pop(indexP)
+          tokenLst.pop(indexP)
+          print(f"LUEGO DE POP token  List: {tokenLst}")
+
+
+print("")
+print(f"DESPUES Lista tokenizada filtrada de DEFV: \n{tokenLst}\n")        
+print("")
+
+
+###REEMPLAZO DE VARIABLES CON LA LISTA "TesterDeflst" - DONE
+"""
+varKeys = varDict.keys()
+
+for i in tokenLst:
+
+    if i in varKeys:
+
+        index = tokenLst.index(i)       #SE IDENTIFICA INDICE DEL ELEMENTO ACTUAL
+
+        value = varDict[i]      #EXTRAER VALOR DE DICCIONARIO DE VARIABLES
+        tokenLst[index] = value     #CAMBIAR VALORES CON LIST INDEXING
+
+print("")
+print(f"***Nueva lista tokenizada: \n{tokenLst}\n")        
+print("")
+"""        
