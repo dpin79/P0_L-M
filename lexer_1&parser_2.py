@@ -189,10 +189,12 @@ for i in (range(len(lowerLst)-1) ):
 ############------------------------------------LST FILTRADA ARTIFICIALMENTE------------------------------------############
 ############################################################################################################################
 
+#ORIGINAL
 flst = ['defvar', 'nom', '0', 'defvar', 'x', '0', 'defvar', 'y', '0', 'defvar', 'one', '0', 'defproc', 'putcb', '(', 'c', ',', 'b', ')', '{', 'drop', '(', 'c', ')', ';', 'letgo', '(', 'b', ')', ';', 'walk', '(', 'n', ')', '}', 'defproc', 'gonorth', '(', ')', '{', 'while', 'can', '(', 'walk', '(', '1', ',', 'north', ')', ')', '{', 'walk', '(', '1', ',', 'north', ')', '}', '}', 'defproc', 'gowest', '(', ')', '{', 'if', 'can','(', 'walk', '(', '1', ',', 'west', ')', ')', '{', 'walk', '(', '1', ',', 'west', ')', '}', 'else', 'nop', '(', ')', '}', '{', 'jump', '(', '3', ',', '3', ')', ';', 'putcb', '(', '2', ',', '1', ')', '}']
-    
-###LISTAS DE PALABRAS CLAVE PARA FACILMENTE FILTRAR
-#NOTE: Hacer el proceso de tokenizar las asignaciones de variable con un control de variables y valores en un dict
+#TESTER
+flstTester = ['defvar', 'nom', '0', 'defvar', 'x', '0', 'defvar', 'y', '0', 'defvar', 'one', '0', 'defproc', 'putcb', '(', 'nom', ',', 'one', ')', '{', 'drop', '(', 'c', ')', ';', 'letgo', '(', 'b', ')', ';', 'walk', '(', 'n', ')', '}', 'defproc', 'gonorth', '(', ')', '{', 'while', 'can', '(', 'walk', '(', '1', ',', 'north', ')', ')', '{', 'walk', '(', '1', ',', 'north', ')', '}', '}', 'defproc', 'gowest', '(', ')', '{', 'if', 'can','(', 'walk', '(', '1', ',', 'west', ')', ')', '{', 'walk', '(', '1', ',', 'west', ')', '}', 'else', 'nop', '(', ')', '}', '{', 'jump', '(', '3', ',', '3', ')', ';', 'putcb', '(', '2', ',', '1', ')', '}']
+#---------------------------------------------------------------------------------------------------------------------------********-----*****-----...
+
 DEF = ['defvar','defproc']
 
 SIN_COMM = ['walk(#)','leap(#)','turn(DIR)', 'turnto(ORI)','drop(#)','get(#)', 'grab(#)', 'letgo(#)']       #SINGLE/SIMPLE COMMANDS - GREEN
@@ -218,32 +220,92 @@ tokenLst = []
 
 #INSERTAR DICT
 
-###TOKENIZAR defVar y defProc con sus elementos
-try:
-    if int(flst[i]) % 1 == 0:
-        tokenLst.append('#')       #IDENTIFICAR NUMEROS Y CAMBIARLOS POR '#' DE CADENAS CORRECTAS EJ: "4"
+###TOKENIZAR defVar y defProc con sus elementos - DONE
+i = 0
+while i < ((len(flst))):
+        
+    
+    if flst[i] in DEF:
+        try:
+            if int(flst[i+2]) % 1 == 0:
+                tokenLst.append('DEFV')
+                tokenLst.append(flst[i+1])
+                tokenLst.append('#')
+                i +=3
+        except:
+        
+            tokenLst.append('DEFP')
+            i+=1
     else:
-      for char in flst[i]:
-          if int(char) % 1 == 0:
-            tokenLst.append('#')  #########################CAMBIAR NÚMEROS INCLUSO EN CADENAS ERRONEAS
-#TODO HACER ELSE DE IF QUE ANALIZA CADENAS ERRONEAS EJ: "(3"
-except:
-  for char in flst[i]:
-      try:
-        if int(flst[i]) % 1 == 0:
-          tokenLst.append('#')  
-      except:
-        continue
-if flst[i] in DEF:
-    try:
-        if int(flst[i+2]) % 1 == 0:
-            tokenLst.append('DEFV')
-    except:
-    
-        tokenLst.append('DEFP')
-    
+        tokenLst.append(flst[i])
+        i+=1
+
+#print("")
+#print(f"La lista original: \n{flst}\n")        
 print("")
 print(f"La lista cambiando palabras clave es: \n{tokenLst}")
+###CREACION DE DICCIONARIO DE VARIABLES DEFINIDAS - DOME
+
+varDict = {}
+
+j = 0
+while j < len(tokenLst):
+    try:
+            
+        if tokenLst[j] == 'DEFV':
+            varDict[tokenLst[j+1]] = tokenLst[j+2]
+
+    except:
+        continue
+    j+=1
+
+
+print("")
+print(f"Nueva lista tokenizada: \n{tokenLst}\n")        
+print("")
+print(f"Diccionario con variables definidas es: \n{varDict}")
+
+###TODO ELIMINAR DEFV CON SUS ELEMENTOS (3 ELEMENTOS TOTALES)
+
+print("")
+print(f"ANTES Lista tokenizada filtrada de DEFV: \n{tokenLst}\n")        
+print("")
+
+for i in tokenLst:
+     
+     if i == 'DEFV':
+          
+          indexP = tokenLst.index(i)
+          
+          print(f"ANTES DE POP token  List: {tokenLst}")
+          tokenLst.pop(indexP)
+          tokenLst.pop(indexP)
+          tokenLst.pop(indexP)
+          print(f"LUEGO DE POP token  List: {tokenLst}")
+
+
+print("")
+print(f"DESPUES Lista tokenizada filtrada de DEFV: \n{tokenLst}\n")        
+print("")
+
+
+###REEMPLAZO DE VARIABLES CON LA LISTA "TesterDeflst" - DONE
+"""
+varKeys = varDict.keys()
+
+for i in tokenLst:
+
+    if i in varKeys:
+
+        index = tokenLst.index(i)       #SE IDENTIFICA INDICE DEL ELEMENTO ACTUAL
+
+        value = varDict[i]      #EXTRAER VALOR DE DICCIONARIO DE VARIABLES
+        tokenLst[index] = value     #CAMBIAR VALORES CON LIST INDEXING
+
+print("")
+print(f"***Nueva lista tokenizada: \n{tokenLst}\n")        
+print("")
+"""       
 
 
 
@@ -259,7 +321,12 @@ print(f"La lista cambiando palabras clave es: \n{tokenLst}")
 ############################################################################################################################
 ############################################################################################################################
 
+"""
 
+La idea principal del PARSER es verificar que los tokens esten en el orden
+correcto y la sintaxis sea la correcta
+
+"""
 
 
 
